@@ -1,6 +1,7 @@
 package will.dev.Artisan_des_saveurs;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,6 +11,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.net.InetAddress;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 
 /**
@@ -36,6 +39,20 @@ public class ArtisanDesSaveursApplication {
 
 		SpringApplication.run(ArtisanDesSaveursApplication.class, args);
 		SpringApplication.run(ArtisanDesSaveursApplication.class, args);
+	}
+
+	@PostConstruct
+	public void configureDatabaseUrl() throws URISyntaxException {
+		String dbUrl = System.getenv("DATABASE_URL");
+		if (dbUrl != null && dbUrl.startsWith("postgres://")) {
+			URI uri = new URI(dbUrl);
+			String[] userInfo = uri.getUserInfo().split(":");
+
+			String jdbcUrl = "jdbc:postgresql://" + uri.getHost() + ":" + uri.getPort() + uri.getPath();
+			System.setProperty("spring.datasource.url", jdbcUrl);
+			System.setProperty("spring.datasource.username", userInfo[0]);
+			System.setProperty("spring.datasource.password", userInfo[1]);
+		}
 	}
 
 	/**
