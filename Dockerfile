@@ -1,6 +1,6 @@
 # Étape 1: Build de l'application avec Maven
 # Utilise une image officielle de Maven avec Java 23 pour compiler le code
-FROM maven:3.8.5-openjdk-23 AS build
+FROM maven:3.8.5-openjdk-17 AS build
 
 # Définit le répertoire de travail à l'intérieur du conteneur
 WORKDIR /app
@@ -17,7 +17,7 @@ RUN mvn -f pom.xml clean package -DskipTests
 
 
 # Étape 2: Exécution de l'application
-# On part d'une image Java 23 très légère, juste pour l'exécution
+# On part d'une image Java 17 très légère, juste pour l'exécution
 FROM openjdk:17-jdk-slim
 
 # Définit le répertoire de travail
