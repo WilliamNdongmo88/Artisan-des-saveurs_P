@@ -4,7 +4,7 @@ networks:
 
 services:
   dev-db:
-    image: postgres:14
+    image: postgres:17
     container_name: res-artisan
     restart: always
     environment:
@@ -17,7 +17,7 @@ services:
       - artisan-des-saveurs_net
 
   prod-db:
-    image: postgres:14
+    image: postgres:17
     container_name: res-artisan_prod
     restart: always
     environment:
