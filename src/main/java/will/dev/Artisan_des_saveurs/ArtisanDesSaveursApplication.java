@@ -9,6 +9,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import will.dev.Artisan_des_saveurs.config.DatabaseUrlInitializer;
 
 import java.net.InetAddress;
 import java.net.URI;
@@ -37,23 +38,9 @@ public class ArtisanDesSaveursApplication {
 				.ignoreIfMissing() // L'option magique !
 				.load();
 
+		SpringApplication app = new SpringApplication(ArtisanDesSaveursApplication.class);
+		app.addInitializers(new DatabaseUrlInitializer());
 		SpringApplication.run(ArtisanDesSaveursApplication.class, args);
-		SpringApplication.run(ArtisanDesSaveursApplication.class, args);
-	}
-
-	@PostConstruct
-	public void setupDatabaseUrl() throws URISyntaxException {
-		String dbUrl = System.getenv("DATABASE_URL");
-		if (dbUrl != null && dbUrl.startsWith("postgres://")) {
-			URI uri = new URI(dbUrl);
-			String[] userInfo = uri.getUserInfo().split(":");
-
-			String jdbcUrl = "jdbc:postgresql://" + uri.getHost() + ":" + uri.getPort() + uri.getPath();
-
-			System.setProperty("spring.datasource.url", jdbcUrl);
-			System.setProperty("spring.datasource.username", userInfo[0]);
-			System.setProperty("spring.datasource.password", userInfo[1]);
-		}
 	}
 
 	/**
