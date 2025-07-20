@@ -1,7 +1,6 @@
 package will.dev.Artisan_des_saveurs;
 
 import io.github.cdimascio.dotenv.Dotenv;
-import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,11 +8,8 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import will.dev.Artisan_des_saveurs.config.DatabaseUrlInitializer;
 
 import java.net.InetAddress;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.UnknownHostException;
 
 /**
@@ -37,9 +33,6 @@ public class ArtisanDesSaveursApplication {
 		Dotenv.configure()
 				.ignoreIfMissing() // L'option magique !
 				.load();
-
-		SpringApplication app = new SpringApplication(ArtisanDesSaveursApplication.class);
-		app.addInitializers(new DatabaseUrlInitializer());
 		SpringApplication.run(ArtisanDesSaveursApplication.class, args);
 	}
 
