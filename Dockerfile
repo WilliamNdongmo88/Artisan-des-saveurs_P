@@ -1,6 +1,6 @@
 # Étape 1: Build de l'application avec Maven
-# Utilise une image officielle de Maven avec Java 23 pour compiler le code
-FROM maven:3.8.5-openjdk-17 AS build
+# Utilise une image officielle de Maven avec Java 17 pour compiler le code
+FROM maven:3.8.5-openjdk-23 AS build
 
 # Définit le répertoire de travail à l'intérieur du conteneur
 WORKDIR /app
