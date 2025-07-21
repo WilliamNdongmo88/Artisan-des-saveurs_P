@@ -30,9 +30,12 @@ public class ArtisanDesSaveursApplication {
 		// On configure Dotenv pour qu'il charge le fichier .env s'il existe,
 		// mais qu'il n'échoue PAS s'il ne le trouve pas.
 		// C'est parfait pour passer de l'environnement local à la production.
-		Dotenv.configure()
+		Dotenv dotenv = Dotenv.configure()
 				.ignoreIfMissing() // L'option magique !
 				.load();
+
+//		Dotenv dotenv = Dotenv.load();
+		dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
 		SpringApplication.run(ArtisanDesSaveursApplication.class, args);
 	}
 
