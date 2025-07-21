@@ -22,13 +22,18 @@ public class WhatsappNotification {
     @Value("${twilio.whatsapp.from}")
     private String fromPhoneNumber;
 
-    public void sendWhatsappMessage(User user, String to, ContactRequest contactRequest) {
+    public void sendWhatsappMessage(User user, String to, ContactRequest contactRequest, Boolean isFromCart) {
         try {
-            String messages = "Client : "+user.getFullName()+"\n"
-                    + "Email : "+user.getEmail()+".\n"
-                    + "Téléphone: "+user.getPhone()+".\n\n"
-                    + "Sujet: "+contactRequest.getSubject()+".\n\n"
-                    + contactRequest.getMessage() + "\n\n";
+            String messages = "";
+            if (isFromCart) {
+                messages = contactRequest.getMessage();
+            }else {
+                messages = "Client : "+user.getFullName()+"\n"
+                        + "Email : "+user.getEmail()+".\n"
+                        + "Téléphone: "+user.getPhone()+".\n\n"
+                        + "Sujet: "+contactRequest.getSubject()+".\n\n"
+                        + contactRequest.getMessage() + "\n\n";
+            }
             Twilio.init(accountSid, authToken);
             Message message = Message.creator(
                             new PhoneNumber("whatsapp:" + to),

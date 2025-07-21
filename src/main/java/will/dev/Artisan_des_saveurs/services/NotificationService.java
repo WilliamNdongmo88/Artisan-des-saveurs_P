@@ -14,16 +14,21 @@ import java.time.format.DateTimeFormatter;
 public class NotificationService {
     private final JavaMailSender javaMailSender;
 
-    public void envoyer(ContactRequest contactRequest) {
+    public void envoyer(ContactRequest contactRequest, Boolean isFromCart) {
         try {
             User user = contactRequest.getUser();
             SimpleMailMessage message = new SimpleMailMessage();
             message.setSubject(contactRequest.getSubject());
 
-            String messageBody = "Client : "+user.getFullName()+"\n\n"
-                    + "Email : "+user.getEmail()+".\n\n"
-                    + "Téléphone: "+user.getPhone()+".\n\n"
-                    + contactRequest.getMessage() + "\n\n";
+            String messageBody = "";
+            if (isFromCart){
+                messageBody = contactRequest.getMessage();
+            }else {
+                messageBody = "Client : "+user.getFullName()+"\n\n"
+                        + "Email : "+user.getEmail()+".\n\n"
+                        + "Téléphone: "+user.getPhone()+".\n\n"
+                        + contactRequest.getMessage() + "\n\n";
+            }
 
 
             message.setFrom("no-reply@will.dev");

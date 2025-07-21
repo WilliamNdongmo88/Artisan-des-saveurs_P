@@ -35,38 +35,40 @@ public class UserService {
     public ResponseEntity<MessageRetourDto> createUser(UserDto userDto) {
         try{
             Optional<User> optionalUser = this.userRepository.findByEmail(userDto.getEmail());
-            if (!optionalUser.isEmpty()) {
+            if (optionalUser.isPresent()) {
                 throw new RuntimeException("Email déjà existant");
+            }else {
+                User user = new User();
+                user.setFirstName(userDto.getFirstName());
+                user.setLastName(userDto.getLastName());
+                user.setEmail(userDto.getEmail());
+                user.setPhone(userDto.getPhone());
+                user.setConsent(Boolean.TRUE.equals(userDto.getConsent()));
+                user.setIsActive(false);
+                User savedUser = userRepository.save(user);
+
+                ContactRequest contactRequest = new ContactRequest();
+                contactRequest.setUser(savedUser);
+                contactRequest.setSubject(userDto.getContactRequests().get(0).getSubject());
+                contactRequest.setMessage(userDto.getContactRequests().get(0).getMessage());
+                contactRequest.setEmailSent(false);
+                contactRequest.setWhatsappSent(false);
+                ContactRequest savedContactReq = contactRequestRepository.save(contactRequest);
+
+                savedUser.setContactRequests(List.of(contactRequest));
+
+                Boolean isFromCart = false;
+                notificationService.envoyer(contactRequest, isFromCart);
+                savedContactReq.markEmailSent();
+                whatsappNotification.sendWhatsappMessage(savedUser, company_number, contactRequest, isFromCart);
+                savedContactReq.markWhatsappSent();
+                contactRequestRepository.save(savedContactReq);
+                MessageRetourDto messageRetourDto = new MessageRetourDto();
+                messageRetourDto.setSuccess(true);
+                messageRetourDto.setMessage(MESSAGE);
+                //return ResponseEntity.ok(UserDtoMapper.toDto(savedUser));
+                return ResponseEntity.ok(messageRetourDto);
             }
-            User user = new User();
-            user.setFirstName(userDto.getFirstName());
-            user.setLastName(userDto.getLastName());
-            user.setEmail(userDto.getEmail());
-            user.setPhone(userDto.getPhone());
-            user.setConsent(Boolean.TRUE.equals(userDto.getConsent()));
-            user.setIsActive(false);
-            User savedUser = userRepository.save(user);
-
-            ContactRequest contactRequest = new ContactRequest();
-            contactRequest.setUser(savedUser);
-            contactRequest.setSubject(userDto.getContactRequests().get(0).getSubject());
-            contactRequest.setMessage(userDto.getContactRequests().get(0).getMessage());
-            contactRequest.setEmailSent(false);
-            contactRequest.setWhatsappSent(false);
-            ContactRequest savedContactReq = contactRequestRepository.save(contactRequest);
-
-            savedUser.setContactRequests(List.of(contactRequest));
-
-            notificationService.envoyer(contactRequest);
-            savedContactReq.markEmailSent();
-            whatsappNotification.sendWhatsappMessage(savedUser, company_number, contactRequest);
-            savedContactReq.markWhatsappSent();
-            contactRequestRepository.save(savedContactReq);
-            MessageRetourDto messageRetourDto = new MessageRetourDto();
-            messageRetourDto.setSuccess(true);
-            messageRetourDto.setMessage(MESSAGE);
-            //return ResponseEntity.ok(UserDtoMapper.toDto(savedUser));
-            return ResponseEntity.ok(messageRetourDto);
         } catch (RuntimeException e) {
             throw new RuntimeException("ERROR: "+ e);
         }
