@@ -28,6 +28,10 @@ public class ArtisanDesSaveursApplication {
 	}
 
 	public static void main(String[] args) {
+		String port = System.getenv("PORT");
+		if (port != null) {
+			System.setProperty("server.port", port);
+		}
 		// On configure Dotenv pour qu'il charge le fichier .env s'il existe,
 		// mais qu'il n'échoue PAS s'il ne le trouve pas.
 		// C'est parfait pour passer de l'environnement local à la production.
