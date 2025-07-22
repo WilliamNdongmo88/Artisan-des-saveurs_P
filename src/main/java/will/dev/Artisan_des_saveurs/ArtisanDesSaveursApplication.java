@@ -3,7 +3,6 @@ package will.dev.Artisan_des_saveurs;
 import io.github.cdimascio.dotenv.Dotenv;
 import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -12,7 +11,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.net.InetAddress;
-import java.net.URI;
 import java.net.UnknownHostException;
 
 /**
@@ -46,24 +44,10 @@ public class ArtisanDesSaveursApplication {
 		SpringApplication.run(ArtisanDesSaveursApplication.class, args);
 	}
 
-	@Value("${DATABASE_URL}")
-	private String databaseUrl;
-
 	@PostConstruct
-	public void parseDatabaseUrl() {
-		try {
-			URI uri = new URI(databaseUrl);
-			String userInfo = uri.getUserInfo(); // username:password
-			String username = userInfo.split(":")[0];
-			String password = userInfo.split(":")[1];
-			String jdbcUrl = "jdbc:postgresql://" + uri.getHost() + ":" + uri.getPort() + uri.getPath();
-
-			System.setProperty("DATABASE_URL", jdbcUrl);
-			System.setProperty("DATABASE_USERNAME", username);
-			System.setProperty("DATABASE_PASSWORD", password);
-		} catch (Exception e) {
-			throw new RuntimeException("Erreur lors du parsing de DATABASE_URL", e);
-		}
+	public void testDBEnvVars() {
+		System.out.println("DB URL: " + System.getenv("DATABASE_URL"));
+		System.out.println("DB USER: " + System.getenv("DATABASE_USERNAME"));
 	}
 
 
