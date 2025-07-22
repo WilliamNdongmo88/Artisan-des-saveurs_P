@@ -1,6 +1,7 @@
 package will.dev.Artisan_des_saveurs;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -38,6 +39,13 @@ public class ArtisanDesSaveursApplication {
 		dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
 		SpringApplication.run(ArtisanDesSaveursApplication.class, args);
 	}
+
+	@PostConstruct
+	public void testDBEnvVars() {
+		System.out.println("DB URL: " + System.getenv("DATABASE_URL"));
+		System.out.println("DB USER: " + System.getenv("DATABASE_USERNAME"));
+	}
+
 
 	/**
 	 * Événement déclenché quand l'application est prête

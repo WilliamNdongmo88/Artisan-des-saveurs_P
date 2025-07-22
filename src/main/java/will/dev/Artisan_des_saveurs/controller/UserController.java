@@ -23,11 +23,15 @@ public class UserController {
     private final UserRepository userRepository;
     private final UserService userService;
 
+    @GetMapping("/")
+    public String hello() {
+        return "L'application fonctionne ✅";
+    }
+
     @PostMapping("place-order")
     public ResponseEntity<MessageRetourDto> createUser(@RequestBody @Valid UserDto userDto) {
         return this.userService.createUser(userDto);
     }
-
 
     // GET /users
     @GetMapping
