@@ -23,7 +23,6 @@ public class OrderService {
     private String company_number;
     private final UserRepository userRepository;
     private final NotificationService notificationService;
-    private final WhatsappNotification whatsappNotification;
     private final ContactRequestRepository contactRequestRepository;
 
     public ResponseEntity<MessageRetourDto> sendOrder(OrderDTO orderDTO) {
@@ -56,7 +55,6 @@ public class OrderService {
 
             Boolean isFromCart = true;
             notificationService.envoyer(contactRequest, isFromCart);
-//            whatsappNotification.sendWhatsappMessage(savedUser, company_number, savedContactReq, isFromCart);
 
             messageRetourDto.setSuccess(true);
             messageRetourDto.setMessage(MESSAGE);

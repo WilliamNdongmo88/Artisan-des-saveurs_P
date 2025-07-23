@@ -30,7 +30,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final ContactRequestRepository contactRequestRepository;
     private final NotificationService notificationService;
-    private final WhatsappNotification whatsappNotification;
+    //private final WhatsappNotification whatsappNotification;
 
     public ResponseEntity<MessageRetourDto> createUser(UserDto userDto) {
         try{
