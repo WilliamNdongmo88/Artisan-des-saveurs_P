@@ -56,7 +56,7 @@ public class OrderService {
 
             Boolean isFromCart = true;
             notificationService.envoyer(contactRequest, isFromCart);
-            whatsappNotification.sendWhatsappMessage(savedUser, company_number, savedContactReq, isFromCart);
+//            whatsappNotification.sendWhatsappMessage(savedUser, company_number, savedContactReq, isFromCart);
 
             messageRetourDto.setSuccess(true);
             messageRetourDto.setMessage(MESSAGE);
