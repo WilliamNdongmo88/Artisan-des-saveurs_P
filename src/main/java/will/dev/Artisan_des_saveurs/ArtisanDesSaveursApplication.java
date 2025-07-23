@@ -6,9 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import will.dev.Artisan_des_saveurs.config.TwilioProperties;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -19,6 +21,7 @@ import java.net.UnknownHostException;
 @Slf4j
 @EnableScheduling
 @SpringBootApplication
+@EnableConfigurationProperties(TwilioProperties.class)
 public class ArtisanDesSaveursApplication {
 
 	private final Environment environment;
