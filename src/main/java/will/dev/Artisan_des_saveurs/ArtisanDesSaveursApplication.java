@@ -48,6 +48,9 @@ public class ArtisanDesSaveursApplication {
 	public void testDBEnvVars() {
 		System.out.println("DB URL: " + System.getenv("DATABASE_URL"));
 		System.out.println("DB USER: " + System.getenv("DATABASE_USERNAME"));
+		System.out.println("accountSid = " + System.getenv("TWILIO_ACCOUNT_SID"));
+		System.out.println("authToken = " + System.getenv("TWILIO_AUTH_TOKEN"));
+		System.out.println("fromPhoneNumber = " + System.getenv("TWILIO_WHATSAPP_FROM"));
 	}
 
 
